@@ -8,6 +8,6 @@
 
 <p>2. Install the required libraries.</p>
 
-<p>3. Download following dataset: https://www.kaggle.com/datasets/brsdincer/asteroid-classification-for-hazardous-prediction</p>
+<p>3. Download following dataset and name it "Asteroid_Updated.csv": https://www.kaggle.com/datasets/brsdincer/asteroid-classification-for-hazardous-prediction</p>
 
 <p>4. Run</p>
