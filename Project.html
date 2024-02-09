@@ -17013,6 +17013,113 @@ class="
 </div>
 </div>
 
+</div><div  class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedShuffleSplit</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+
+
+<span class="c1">#Splitting the dataframe into training and test sets using stratification.</span>
+<span class="n">RezultatiTestiranja</span><span class="o">=</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ImeModela&quot;</span><span class="p">,</span><span class="s1">&#39;Max Accuracy&#39;</span><span class="p">,</span><span class="s2">&quot;Min Accuracy&quot;</span><span class="p">,</span><span class="s2">&quot;Avg Accuracy&quot;</span><span class="p">,</span><span class="s2">&quot;Max precision&quot;</span><span class="p">,</span><span class="s2">&quot;Min precision&quot;</span><span class="p">,</span><span class="s2">&quot;Avg precision&quot;</span><span class="p">,</span><span class="s2">&quot;Max recal&quot;</span><span class="p">,</span><span class="s2">&quot;Min recal&quot;</span><span class="p">,</span><span class="s2">&quot;Avg recal&quot;</span>
+                                              <span class="p">,</span><span class="s2">&quot;Max f1&quot;</span><span class="p">,</span><span class="s2">&quot;Min f1&quot;</span><span class="p">,</span><span class="s2">&quot;Avg f1&quot;</span><span class="p">])</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span>
+                                                    <span class="n">stratify</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1">#We need to consider that the number of non-dangerous asteroids is much larger</span>
+<span class="c1">#than the number of dangerous asteroids.</span>
+<span class="c1">#Therefore, some form of resampling technique needs to be applied.</span>
+<span class="c1">#https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/</span>
+<span class="c1">#https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html</span>
+
+<span class="c1">#We have chosen a combination of undersampling and oversampling (SMOTE).</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj trening podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj test podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj pozitivnih trening podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_train</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj negativnih trening podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_train</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj pozitivnih test podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_test</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj negativnih test podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_test</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_test</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+
+<span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sm</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Y_train</span><span class="o">=</span><span class="n">Y_train</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj pozitivnih trening podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_train</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broj negativnih trening podataka:&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Y_train</span><span class="p">[</span><span class="s2">&quot;pha&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+
+<span class="c1">#For model evaluation, we use StratifiedKFold cross-validation, which is perfect for our problem.</span>
+<span class="c1">#This cross-validation object is a variation of KFold that returns stratified folds (always includes instances of the minority class).</span>
+<span class="c1">#Folds are created by preserving the percentage of samples for each class, thus solving the problem of imbalanced classification.</span>
+
+
+<span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">test_size</span><span class="o">=</span><span class="mf">0.07</span><span class="p">)</span>
+<span class="c1">#We split the dataset into 15 equal parts, taking into account the data imbalance.</span>
+
+
+<span class="c1">#https://www.analyticsvidhya.com/blog/2021/07/metrics-to-evaluate-your-classification-model-to-take-the-right-decisions/</span>
+<span class="c1">#https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5</span>
+<span class="c1">#https://www.analyticsvidhya.com/blog/2020/10/improve-class-imbalance-class-weights/</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Broj trening podataka: 738760
+Broj test podataka: 82085
+
+
+Broj pozitivnih trening podataka: 1813
+Broj negativnih trening podataka: 736947
+Broj pozitivnih test podataka: 202
+Broj negativnih test podataka: 81883
+
+
+Broj pozitivnih trening podataka: 36847
+Broj negativnih trening podataka: 122823
+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 </body>
 
